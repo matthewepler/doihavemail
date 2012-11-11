@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import os, datetime
+import os, json, requests
 import re
 from unidecode import unidecode
 
-from flask import Flask, request, render_template, redirect, abort
+from flask import Flask, request, render_template, redirect, abort, jsonify
 
 # import all of mongoengine
 # from mongoengine import *
 from flask.ext.mongoengine import mongoengine
 
 # import data models
-import models
+#import models
 
 app = Flask(__name__)   # create our flask app
 app.config['CSRF_ENABLED'] = False
@@ -30,109 +30,42 @@ categories = ['web','physical computing','software','video','music','installatio
 @app.route("/", methods=['GET','POST'])
 def index():
 
-	app.logger.debug(request.form.getlist('categories'))
+	# user inputs name to simple form
 
-	# get Idea form from models.py
-	idea_form = models.IdeaForm(request.form)
+	return render_template("index.html")
+
+
+@app.route("/check", methods=['POST'])
+def check():
+
 	
-	if request.method == "POST" and idea_form.validate():
-	
-		# get form data - create new idea
-		idea = models.Idea()
-		idea.creator = request.form.get('creator','anonymous')
-		idea.title = request.form.get('title','no title')
-		idea.slug = slugify(idea.title + " " + idea.creator)
-		idea.idea = request.form.get('idea','')
-		idea.categories = request.form.getlist('categories')
-		
-		idea.save()
-
-		return redirect('/ideas/%s' % idea.slug)
-
-	else:
-
-		if request.form.getlist('categories'):
-			for c in request.form.getlist('categories'):
-				idea_form.categories.append_entry(c)
-
-		# render the template
-		templateData = {
-			'ideas' : models.Idea.objects(),
-			'categories' : categories,
-			'form' : idea_form
-		}
-
-		return render_template("main.html", **templateData)
-
-@app.route("/category/<cat_name>")
-def by_category(cat_name):
-
-	try:
-		ideas = models.Idea.objects(categories=cat_name)
-	except:
-		abort(404)
+	name_str = request.form.get('name-input')
+	vendors = []
+	response = "no"
 
 	templateData = {
-		'current_category' : {
-			'slug' : cat_name,
-			'name' : cat_name.replace('_',' ')
-		},
-		'ideas' : ideas,
-		'categories' : categories
+		'name' : name_str,
+		'response' : 'no'
 	}
 
-	return render_template('category_listing.html', **templateData)
+	url = "http://itpmailcall.herokuapp.com/data/mailpieces/onshelf"
+	data_request = requests.get(url)
+	data = data_request.json
+	items = data["ideas"]
 
-
-
-@app.route("/ideas/<idea_slug>")
-def idea_display(idea_slug):
-
-	# get idea by idea_slug
-	try:
-		idea = models.Idea.objects.get(slug=idea_slug)
-	except:
-		abort(404)
-
-	# prepare template data
+	for i in items:
+		if i['to'] == name_str:
+			vendors.append(i['from'])
+			response = "yes"
+			
 	templateData = {
-		'idea' : idea
-	}
-
-	# render and return the template
-	return render_template('idea_entry.html', **templateData)
+		'name' : name_str,
+		'vendors' : vendors,
+		'response' : response
+	}		
 	
-@app.route("/ideas/<idea_id>/comment", methods=['POST'])
-def idea_comment(idea_id):
+	return render_template("/return.html", **templateData)
 
-	name = request.form.get('name')
-	comment = request.form.get('comment')
-
-	if name == '' or comment == '':
-		# no name or comment, return to page
-		return redirect(request.referrer)
-
-
-	#get the idea by id
-	try:
-		idea = models.Idea.objects.get(id=idea_id)
-	except:
-		# error, return to where you came from
-		return redirect(request.referrer)
-
-
-	# create comment
-	comment = models.Comment()
-	comment.name = request.form.get('name')
-	comment.comment = request.form.get('comment')
-	
-	# append comment to idea
-	idea.comments.append(comment)
-
-	# save it
-	idea.save()
-
-	return redirect('/ideas/%s' % idea.slug)
 
 
 @app.errorhandler(404)

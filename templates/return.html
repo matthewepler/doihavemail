@@ -1,0 +1,38 @@
+{% extends "layout/main.html" %}
+
+
+{% block body %}
+
+<div class="container" align="center">
+
+            <h1 class="pageheader">
+                <a href="/">ITP MAIL CALL</a>
+            </h1>
+         
+        	{% if response == "no" %}
+	        	<p>
+	            	<h3>Sorry {{ name }}, looks like your mail isn't here yet. Check back later.</h3>
+	            </p>
+	            {% elif response== "yes" %}
+	            <p>
+	            	<h3>Woo hoo, {{ name }}! You have mail from:</h3>
+	            </p>
+	            <div>
+	            	{% for v in vendors %}	             
+	             	<h3>{{ v }}</h3>
+	            	</p>
+	             	{% endfor %}
+	            </div>
+            {% endif %}
+        </br>
+            <h3>Come and get it!</h3>
+        </br></br>
+    </div>
+
+
+<div class="container" align="center">
+ <a href="/">BACK</a>
+</div>
+
+
+{% endblock %}

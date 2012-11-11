@@ -1,0 +1,25 @@
+{% extends "layout/main.html" %}
+
+
+{% block body %}
+
+<div class="container" align="center">
+
+            <h1 class="pageheader">
+                <a href="/">ITP MAIL CALL</a>
+            </h1>
+            <p>
+                <h3>Waiting for mail? Tell us your name and we'll check for you.</h3>
+            </p>
+        </br>
+
+
+<div class="container" align="center">
+ <form name="name" action="/check" method="post">
+ 	<input type="text" name="name-input" placeholder="Enter your name...">
+ 	<input type="submit" value="Check" class="btn btn-info" style="margin-bottom:8px">
+ </form>
+</div>
+
+
+{% endblock %}

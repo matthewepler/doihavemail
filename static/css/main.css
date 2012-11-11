@@ -9,6 +9,111 @@ span.label a {
 	color:#fff;
 }
 
+/* Changing the CSS */
+
+/* Body and structure
+-------------------------------------------------- */
+body {
+  background-color: #333;
+  font-family: 'Average Sans', sans-serif;
+  font-size: 16px;
+}
+
+.pageheader {
+  margin: 40px 0px;
+}
+
+p {
+  color: #DEE5DE;
+  text-align:justify;
+}
+
+.site_description{
+  color: #F18D05;
+  font-size: 21px;
+  line-height: 25px;
+  text-align: justify;
+  margin-top: 10px;
+  margin-bottom: -10px;
+  font-weight: normal;
+}
+
+.search_by {
+  line-height: 18px;
+  margin: 8px 0 0 50px;
+}
+
+.label-inverse, .badge-inverse {
+background-color: #565D5E;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #CDCDCD;
+}
+
+a {
+  color: #D0D102;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #D70060;
+}
+
+.comment3 {
+  color: #F18D05;
+  font-size: 20px;
+  width: 700px;
+  resize: none;
+}
+
+li {
+  color: #4CC4D4;
+}
+
+label {
+  color: #DEE5DE;
+  font-size: 16px;
+}
+
+.label {
+  padding: 4px 4px;
+  font-size: 13px;
+  line-height: 30px;
+}
+
+.labelnew {
+  padding: 10px 20px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 20px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #565D5E;
+  font-weight: bold;
+  line-height: 50px;
+  color: white;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.review_count {
+  color: #D70060;
+}
+
+.rec {
+  color: #4CC4D4;
+}
+
+.right {
+  margin: 10px;
+}
+
+
+
+
+
 
 
 
